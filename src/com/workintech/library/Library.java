@@ -16,6 +16,7 @@ public class Library {
     private Map<Book, Reader> borrowedBooks;
     private List<Book> returnedBooks;
     private Librarian librarian;
+    private double libraryBalance;
 
     public Library(List<Book> books, Set<Reader> readers, Map<Book, Reader> borrowedBooks, List<Book> returnedBooks, Librarian librarian) {
         this.books = books;
@@ -23,6 +24,7 @@ public class Library {
         this.borrowedBooks = borrowedBooks;
         this.returnedBooks = returnedBooks;
         this.librarian = librarian;
+        this.libraryBalance = 0;
     }
 
     public List<Book> getBooks() {
@@ -47,6 +49,10 @@ public class Library {
 
     public Librarian getLibrarian() {
         return librarian;
+    }
+
+    public double getLibraryBalance() {
+        return libraryBalance;
     }
 
     @Override

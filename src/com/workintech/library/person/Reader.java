@@ -10,6 +10,7 @@ public class Reader extends Person {
     private int limit;
     private Set<Book> borrowed;
     private double payment;
+    private double balance;
     public Reader(long id, String name, String surname) {
         super(id, name, surname, Role.USER);
         this.limit = 5;
@@ -18,7 +19,6 @@ public class Reader extends Person {
     public int getLimit() {
         return limit;
     }
-
     public void setLimit(int limit) {
         this.limit = limit;
     }
@@ -26,7 +26,6 @@ public class Reader extends Person {
     public Set<Book> getBorrowed() {
         return borrowed;
     }
-
     public void setBorrowed(Set<Book> borrowed) {
         this.borrowed = borrowed;
     }
@@ -34,8 +33,14 @@ public class Reader extends Person {
     public double getPayment() {
         return payment;
     }
-
     public void setPayment(double payment) {
         this.payment = payment;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 }

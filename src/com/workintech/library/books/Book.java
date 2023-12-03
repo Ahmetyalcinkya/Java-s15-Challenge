@@ -42,8 +42,8 @@ public class Book {
         return status;
     }
 
-    public void setStatus(BookStatus status) {
-        this.status = status;
+    public BookStatus setStatus(BookStatus status) {
+        return this.status = status;
     }
 
     @Override
