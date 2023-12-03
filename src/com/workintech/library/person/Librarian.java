@@ -3,13 +3,14 @@ package com.workintech.library.person;
 import com.workintech.library.Library;
 import com.workintech.library.books.Book;
 import com.workintech.library.books.enums.BookStatus;
+import com.workintech.library.interfaces.Customable;
 import com.workintech.library.person.enums.Role;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public final class Librarian extends Person {
+public final class Librarian extends Person implements Customable {
     private String password;
 
     public Librarian(long id, String name, String surname, String password) {
@@ -141,6 +142,18 @@ public final class Librarian extends Person {
                 return reader;
             } else {
                 System.out.println("We didn't find the reader that you searched.");
+            }
+        }
+        return null;
+    }
+    public Author findAuthor(Set<Author> authorList, String authorName){
+        for (Author author : authorList) {
+            String authorsName = author.getName();
+            if (authorsName.contains(authorName)) {
+                System.out.println("The author has found. Author: " + author);
+                return author;
+            } else {
+                System.out.println("We didn't find the author that you searched.");
             }
         }
         return null;

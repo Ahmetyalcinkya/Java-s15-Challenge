@@ -30,6 +30,10 @@ public class Book {
         return title;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
     public double getPrice() {
         return price;
     }

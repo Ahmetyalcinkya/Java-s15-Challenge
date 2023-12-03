@@ -4,19 +4,22 @@ package com.workintech.library;
 import com.workintech.library.books.Book;
 import com.workintech.library.books.enums.BookStatus;
 import com.workintech.library.books.enums.BookType;
+import com.workintech.library.person.Author;
 import com.workintech.library.person.Librarian;
+import com.workintech.library.person.Person;
 import com.workintech.library.person.Reader;
+import com.workintech.library.person.enums.Role;
 
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
 
-        Set<Reader> readers = new HashSet<>();
         List<Book> returned = new ArrayList<>();
         Librarian librarian = new Librarian(1,"Ahmet", "Yalçınkaya", "123456");
 
-        Library library = new Library(new ArrayList<>(), readers, new HashMap<>(), returned,librarian);
+        Library library = new Library(new ArrayList<>(), new HashSet<>(), new HashSet<>(), new HashMap<>(), returned,librarian);
+        Person author1 = new Author(1,"Khaled","Hosseini");
 
         //books
         Book book1 = new Book(1,"Kuyruklu Yıldızın Peşinde","Haruki Murakami",2, BookStatus.UNDAMAGED, BookType.ADVENTURE,35);
@@ -65,18 +68,19 @@ public class Main {
 
         reader1.getPayment();
 
-        readers.add(reader1);
-        readers.add(reader2);
-        readers.add(reader3);
-        readers.add(reader4);
-        readers.add(reader5);
-        readers.add(reader1); // Set olduğu için kullanıcı tekrar eklenmez !
+        library.getReaders().add(reader1);
+        library.getReaders().add(reader2);
+        library.getReaders().add(reader3);
+        library.getReaders().add(reader4);
+        library.getReaders().add(reader5);
+        library.getReaders().add(reader1); // Set olduğu için kullanıcı tekrar eklenmez !
 
         Scanner scanner = new Scanner(System.in);
         int choice;
         int userChoice;
         int librarianChoice;
         int readerChoice;
+        int authorChoice;
 
         do {
             System.out.println("Welcome to library !");
@@ -155,15 +159,15 @@ public class Main {
                             }
                             break;
                         case 2:
+                            System.out.println("Select reader :");
+                            String readerName = scanner.nextLine();
+                            Reader getReader = librarian.findReader(library.getReaders(), readerName);
                             switch (readerChoice){
                                 System.out.println("1 -> Borrow Book");
                                 System.out.println("2 -> Return Book");
                                 System.out.println("3 -> Get balance info");
                                 System.out.println("3 -> Get limit");
                                 case 1:
-                                    System.out.println("Select reader :");
-                                    String readerName = scanner.nextLine();;
-                                    Reader getReader = librarian.findReader(readers, readerName);
                                     System.out.println("Get the book you want :");
                                     String getBookName = scanner.nextLine();
                                     Book getBook = librarian.findBookByName(library.getBooks(), getBookName);
@@ -174,19 +178,74 @@ public class Main {
                                     System.out.println("Write book that you want to return :");
                                     String returnedBook = scanner.nextLine();
                                     Book getreturnedBook = librarian.findBookByName(library.getBooks(), returnedBook);
-                                    System.out.println("The reader of this book :");
-                                    String returnedReader = scanner.nextLine();;
-                                    Reader getreturnedReader = librarian.findReader(readers, returnedReader);
-                                    librarian.refundedFee(library, library.getBorrowedBooks(), getreturnedBook, getreturnedReader);
+                                    librarian.refundedFee(library, library.getBorrowedBooks(), getreturnedBook, getReader);
                                     break;
                                 case 3:
-                                    break; // Buradan devam edilecek!!!!!!!
+                                    System.out.println(getReader.getBalance());
+                                    break;
                                 case 4:
+                                    System.out.println(getReader.getLimit());
                                     break;
                                 default:
                                     System.out.println("Please enter a valid value!");
                             }
+                            break;
                         case 3:
+                            System.out.println("Select author :");
+                            String authorName = scanner.nextLine();
+                            Author getAuthor = librarian.findAuthor(library.getAuthors(), authorName);
+                            switch (authorChoice){
+                                System.out.println("1 -> Add Book");
+                                System.out.println("2 -> Delete Book");
+                                System.out.println("3 -> Update Book");
+                                System.out.println("4 -> Get the Author's Books");
+                                case 1:
+                                    System.out.println("Book id :");
+                                    long bookId = scanner.nextLong();
+                                    System.out.println("Book title :");
+                                    String bookTitle = scanner.nextLine();
+                                    System.out.println("Book stock :");
+                                    int bookStock = scanner.nextInt();
+                                    System.out.println("Book type (Type must be one of these : HISTORICAL,ROMANCE," +
+                                            "HORROR,SCIENCEFICTION,FANTASTIC,ADVENTURE,PSYCHOLOGY,SCIENCE) :");
+                                    String bookType = scanner.nextLine().toUpperCase();
+                                    BookType type = BookType.valueOf(bookType);
+                                    System.out.println("Book price :");
+                                    double bookPrice = scanner.nextDouble();
+
+                                    Book newBook = new Book(bookId,bookTitle,getAuthor.getName() + getAuthor.getSurname(),
+                                            bookStock,BookStatus.UNDAMAGED, type, bookPrice);
+                                    getAuthor.addBook(library.getBooks(), newBook);
+                                    break;
+                                case 2:
+                                    System.out.println("Book Title :");
+                                    String bookName = scanner.nextLine();
+                                    Book foundBook = librarian.findBookByName(library.getBooks(), bookName);
+                                    if(foundBook.getAuthor().contains(getAuthor.getName())){
+                                        getAuthor.deleteBook(library.getBooks(),foundBook);
+                                    }else {
+                                        System.out.println("You cannot delete somebody else's book.");
+                                    }
+                                    break;
+                                case 3:
+                                    System.out.println("Book Title :");
+                                    String bookNameUpdate = scanner.nextLine();
+                                    Book updateTheBook = librarian.findBookByName(library.getBooks(), bookNameUpdate);
+                                    System.out.println("New book price :");
+                                    double updatedBookPrice = scanner.nextDouble();
+                                    getAuthor.updateBook(library.getBooks(),updateTheBook,updatedBookPrice);
+
+                                    System.out.println("New book status :");
+                                    System.out.println("Book status (Status must be one of these : UNDAMAGED, SLIGHTLYDAMAGED, DAMAGED, USUSABLE) :");
+                                    String bookStatus = scanner.nextLine().toUpperCase();
+                                    BookStatus status = BookStatus.valueOf(bookStatus);
+                                    getAuthor.updateBook(library.getBooks(),updateTheBook,status);
+                                    break;
+                                case 4:
+                                    break;
+
+
+                            }
                             break;
                         default:
                             System.out.println("Please enter a valid value!");
