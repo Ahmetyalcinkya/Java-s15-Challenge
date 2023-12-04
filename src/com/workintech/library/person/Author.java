@@ -5,6 +5,7 @@ import com.workintech.library.books.enums.BookStatus;
 import com.workintech.library.interfaces.Customable;
 import com.workintech.library.person.enums.Role;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class Author extends Person implements Customable {

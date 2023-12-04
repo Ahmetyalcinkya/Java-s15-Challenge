@@ -88,34 +88,39 @@ public class Main {
             System.out.println("0 -> Stop the application.");
             System.out.println("1 -> Choose the user.");
             System.out.println("2 -> Show all the books in library.");
-            switch (choice){
+            choice = scanner.nextInt();
+            switch (choice){ // 0-1-2 işlemlerini seçmeli
                 case 0:
                     System.out.println("The application is being stopped.");
                     scanner.close();
                     break;
                 case 1:
-                    switch (userChoice){
-                        System.out.println("1 -> Librarian");
-                        System.out.println("2 -> Reader");
-                        System.out.println("3 -> Author");
+                    System.out.println("1 -> Librarian");
+                    System.out.println("2 -> Reader");
+                    System.out.println("3 -> Author");
+                    userChoice = scanner.nextInt();
+                    switch (userChoice){ // 1-2-3 kullanıcı işlemlerini seçmeli
                         case 1:
-                            switch (librarianChoice){
-                                System.out.println("1 -> Add Book");
-                                System.out.println("2 -> Delete Book");
-                                System.out.println("3 -> Update Book");
-                                System.out.println("4 -> Find Book");
+                            System.out.println("1 -> Add Book");
+                            System.out.println("2 -> Delete Book");
+                            System.out.println("3 -> Update Book");
+                            System.out.println("4 -> Find Book");
+                            librarianChoice = scanner.nextInt();
+                            switch (librarianChoice){ // 1-2-3-4 kütüphaneci işlemlerini seçmeli
                                 case 1:
                                     System.out.println("Book id :");
                                     long bookId = scanner.nextLong();
                                     System.out.println("Book title :");
                                     String bookTitle = scanner.nextLine();
+                                    scanner.nextLine();
                                     System.out.println("Book author :");
                                     String bookAuthor = scanner.nextLine();
                                     System.out.println("Book stock :");
                                     int bookStock = scanner.nextInt();
+                                    scanner.nextLine();
                                     System.out.println("Book type (Type must be one of these : HISTORICAL,ROMANCE," +
                                             "HORROR,SCIENCEFICTION,FANTASTIC,ADVENTURE,PSYCHOLOGY,SCIENCE) :");
-                                    String bookType = scanner.nextLine().toUpperCase();
+                                    String bookType = scanner.nextLine().toUpperCase(Locale.ENGLISH);
                                     BookType type = BookType.valueOf(bookType);
                                     System.out.println("Book price :");
                                     double bookPrice = scanner.nextDouble();
@@ -125,26 +130,33 @@ public class Main {
                                     librarian.addBook(library.getBooks(), newBook);
                                     break;
                                 case 2:
+                                    scanner.nextLine();
+                                    System.out.println(library.getBooks());
                                     System.out.println("Book Title :");
                                     String bookName = scanner.nextLine();
                                     Book foundBook = librarian.findBookByName(library.getBooks(), bookName);
                                     librarian.deleteBook(library.getBooks(),foundBook);
+                                    System.out.println(library.getBooks());
                                     break;
                                 case 3:
+                                    scanner.nextLine();
+                                    System.out.println(library.getBooks());
                                     System.out.println("Book Title :");
                                     String bookNameUpdate = scanner.nextLine();
                                     Book updateTheBook = librarian.findBookByName(library.getBooks(), bookNameUpdate);
                                     System.out.println("New book price :");
                                     double updatedBookPrice = scanner.nextDouble();
                                     librarian.updateBook(library.getBooks(),updateTheBook,updatedBookPrice);
-
+                                    scanner.nextLine();
                                     System.out.println("New book status :");
                                     System.out.println("Book status (Status must be one of these : UNDAMAGED, SLIGHTLYDAMAGED, DAMAGED, USUSABLE) :");
-                                    String bookStatus = scanner.nextLine().toUpperCase();
+                                    String bookStatus = scanner.nextLine().toUpperCase(Locale.ENGLISH);
                                     BookStatus status = BookStatus.valueOf(bookStatus);
                                     librarian.updateBook(library.getBooks(),updateTheBook,status);
+                                    System.out.println(library.getBooks());
                                     break;
                                 case 4:
+                                    scanner.nextLine();
                                     System.out.println("Find Book by Name :");
                                     String bookByName = scanner.nextLine();
                                     librarian.findBookByName(library.getBooks(), bookByName);
@@ -155,18 +167,18 @@ public class Main {
                                 default:
                                     System.out.println("Please enter a valid value!");
                                     break;
-
                             }
                             break;
                         case 2:
                             System.out.println("Select reader :");
                             String readerName = scanner.nextLine();
                             Reader getReader = librarian.findReader(library.getReaders(), readerName);
-                            switch (readerChoice){
-                                System.out.println("1 -> Borrow Book");
-                                System.out.println("2 -> Return Book");
-                                System.out.println("3 -> Get balance info");
-                                System.out.println("3 -> Get limit");
+                            System.out.println("1 -> Borrow Book");
+                            System.out.println("2 -> Return Book");
+                            System.out.println("3 -> Get balance info");
+                            System.out.println("3 -> Get limit");
+                            readerChoice = scanner.nextInt();
+                            switch (readerChoice){ // 1-2-3-4 okuyucu işlemlerini seçmeli
                                 case 1:
                                     System.out.println("Get the book you want :");
                                     String getBookName = scanner.nextLine();
@@ -194,11 +206,12 @@ public class Main {
                             System.out.println("Select author :");
                             String authorName = scanner.nextLine();
                             Author getAuthor = librarian.findAuthor(library.getAuthors(), authorName);
-                            switch (authorChoice){
-                                System.out.println("1 -> Add Book");
-                                System.out.println("2 -> Delete Book");
-                                System.out.println("3 -> Update Book");
-                                System.out.println("4 -> Get the Author's Books");
+                            System.out.println("1 -> Add Book");
+                            System.out.println("2 -> Delete Book");
+                            System.out.println("3 -> Update Book");
+                            System.out.println("4 -> Get the Author's Books");
+                            authorChoice = scanner.nextInt();
+                            switch (authorChoice){ // 1-2-34 yazar işlemlerini seçmeli
                                 case 1:
                                     System.out.println("Book id :");
                                     long bookId = scanner.nextLong();
@@ -242,24 +255,24 @@ public class Main {
                                     getAuthor.updateBook(library.getBooks(),updateTheBook,status);
                                     break;
                                 case 4:
+                                    System.out.println("Get author's book :");
+                                    String author = scanner.nextLine();
+                                    List<Book> authorsBook = librarian.getAuthorsBook(library.getBooks(),author);
+                                    System.out.println(authorsBook);
                                     break;
-
-
                             }
                             break;
                         default:
                             System.out.println("Please enter a valid value!");
                     }
+                    break;
                 case 2:
+                    System.out.println(library.getBooks());
                     break;
                 default:
                     System.out.println("Please enter a valid value!");
-
             }
-
         }while (choice != 0);
-
-
 
 //        System.out.println(library.getBooks());
 //        System.out.println(readers);

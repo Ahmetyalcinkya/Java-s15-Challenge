@@ -6,6 +6,7 @@ import com.workintech.library.books.enums.BookStatus;
 import com.workintech.library.interfaces.Customable;
 import com.workintech.library.person.enums.Role;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -30,7 +31,7 @@ public final class Librarian extends Person implements Customable {
     public Book findBookByName(List<Book> list, String bookTitle){
         for(Book book : list){
             String bookName = book.getTitle();
-            if(bookName.contains(bookTitle)){
+            if(bookName.toLowerCase().contains(bookTitle.toLowerCase())){
                 System.out.println("The book has found. Book: " + book);
                 return book;
             }else {
@@ -157,5 +158,14 @@ public final class Librarian extends Person implements Customable {
             }
         }
         return null;
+    }
+    public List<Book> getAuthorsBook(List<Book> books,String name){
+        List<Book> authorsBook = new ArrayList<>();
+        for(Book book: books){
+            if(book.getAuthor().equalsIgnoreCase(name)){
+                authorsBook.add(book);
+            }
+        }
+        return authorsBook;
     }
 }
