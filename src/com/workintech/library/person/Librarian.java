@@ -73,14 +73,14 @@ public final class Librarian extends Person implements Customable {
         if(list.contains(book)){
             book.setPrice(price);
         }else {
-            System.out.println("Yout cannot change the price value. The book doesn't exist.");
+            System.out.println("You cannot change the price value. The book doesn't exist.");
         }
     }
     public void updateBook(List<Book> list, Book book, BookStatus status){
         if(list.contains(book)){
             book.setStatus(status);
         }else {
-            System.out.println("Yout cannot change the status. The book doesn't exist.");
+            System.out.println("You cannot change the status. The book doesn't exist.");
         }
     }
     public void borrowBook(List<Book> list, Map<Book, Reader> borrow, Reader reader, Book book){
@@ -138,7 +138,7 @@ public final class Librarian extends Person implements Customable {
     public Reader findReader(Set<Reader> readerList, String readerName) {
         for (Reader reader : readerList) {
             String readersName = reader.getName();
-            if (readersName.contains(readerName)) {
+            if (readersName.toLowerCase().contains(readerName.toLowerCase())) {
                 System.out.println("The reader has found. Reader: " + reader);
                 return reader;
             } else {
@@ -150,7 +150,7 @@ public final class Librarian extends Person implements Customable {
     public Author findAuthor(Set<Author> authorList, String authorName){
         for (Author author : authorList) {
             String authorsName = author.getName();
-            if (authorsName.contains(authorName)) {
+            if (authorsName.toLowerCase().contains(authorName.toLowerCase())) {
                 System.out.println("The author has found. Author: " + author);
                 return author;
             } else {
@@ -159,10 +159,10 @@ public final class Librarian extends Person implements Customable {
         }
         return null;
     }
-    public List<Book> getAuthorsBook(List<Book> books,String name){
+    public List<Book> getAuthorsBook(List<Book> list,String name){
         List<Book> authorsBook = new ArrayList<>();
-        for(Book book: books){
-            if(book.getAuthor().equalsIgnoreCase(name)){
+        for(Book book: list){
+            if(book.getAuthor().toLowerCase().contains(name.toLowerCase())){
                 authorsBook.add(book);
             }
         }
