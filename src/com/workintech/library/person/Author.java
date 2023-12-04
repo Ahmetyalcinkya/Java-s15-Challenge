@@ -9,8 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class Author extends Person implements Customable {
-    public Author(long id, String name, String surname) {
+    String password;
+
+    public Author(long id, String name, String surname, String password) {
         super(id, name, surname, Role.AUTHOR);
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     @Override
@@ -22,7 +29,6 @@ public final class Author extends Person implements Customable {
             System.out.println("Author add the book to library. Added Book: " + book);
         }
     }
-
     @Override
     public void deleteBook(List<Book> list, Book book) {
         if (list.contains(book)){
@@ -32,7 +38,6 @@ public final class Author extends Person implements Customable {
             System.out.println("You cannot delete the book that doesn't exist.");
         }
     }
-
     @Override
     public void updateBook(List<Book> list, Book book, double price) {
         if(list.contains(book)){
@@ -41,7 +46,6 @@ public final class Author extends Person implements Customable {
             System.out.println("Yout cannot change the price value. The book doesn't exist.");
         }
     }
-
     @Override
     public void updateBook(List<Book> list, Book book, BookStatus status) {
         if(list.contains(book)){

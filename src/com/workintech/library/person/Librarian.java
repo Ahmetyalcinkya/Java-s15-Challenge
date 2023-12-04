@@ -19,6 +19,10 @@ public final class Librarian extends Person implements Customable {
         this.password = password;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void putReturnedBooksToLibrary(List<Book> list, Book book){
         if (list.contains(book)){
             System.out.println("This book already in the library.");
@@ -27,12 +31,11 @@ public final class Librarian extends Person implements Customable {
             System.out.println("The book has returned to its place in the library.");
         }
     }
-
     public Book findBookByName(List<Book> list, String bookTitle){
         for(Book book : list){
             String bookName = book.getTitle();
             if(bookName.toLowerCase().contains(bookTitle.toLowerCase())){
-                System.out.println("The book has found. Book: " + book);
+                System.out.println("The book has found. Book: \n"  + book);
                 return book;
             }else {
                 System.out.println("We didn't find the book that you searched.");
@@ -44,7 +47,7 @@ public final class Librarian extends Person implements Customable {
         for(Book book: list){
             long id = book.getId();
             if(id == bookID){
-                System.out.println("The book has found. Book: " + book);
+                System.out.println("The book has found. Book: \n" + book);
                 return book;
             }else{
                 System.out.println("We didn't find the book that you searched.");
@@ -92,20 +95,22 @@ public final class Librarian extends Person implements Customable {
         } else {
             System.out.println("This book already borrowed.");
         }
-    } // NULL DÖNÜYOR!!!!
+    }
     public void feeReceived(Book book, Reader reader){
         reader.setPayment(book.getPrice());
-        System.out.println("Borcunuz : " + book.getPrice());
+        System.out.println("Your fee : " + book.getPrice());
     }
     public void refundedFee(Library library,Map<Book, Reader> borrow, Book book, Reader reader){
         if(borrow.containsKey(book)){
             System.out.println("Status on the date of receipt: " + book.getStatus());
             BookStatus updatedStatus = book.setStatus(BookStatus.randomStatus());
-            System.out.println("updatedstatus = " + updatedStatus);
+            System.out.println("Updated Status : " + updatedStatus);
 
             if(updatedStatus.equals(BookStatus.UNDAMAGED)){
                 reader.setBalance(reader.getPayment());
                 reader.setLimit(reader.getLimit() + 1);
+                borrow.remove(book);
+                library.getReturnedBooks().add(book);
                 System.out.println(reader.getName() + "'s balance: " + reader.getBalance());
 
             } else if (updatedStatus.equals(BookStatus.SLIGHTLYDAMAGED)) {
@@ -113,6 +118,8 @@ public final class Librarian extends Person implements Customable {
                 double balance = library.getLibraryBalance();
                 balance += ((reader.getPayment() / 3) * 2);
                 reader.setLimit(reader.getLimit() + 1);
+                borrow.remove(book);
+                library.getReturnedBooks().add(book);
                 System.out.println("Library's balance: " + balance);
                 System.out.println(reader.getName() + "'s balance: " + reader.getBalance());
 
@@ -120,6 +127,8 @@ public final class Librarian extends Person implements Customable {
                 reader.setBalance(reader.getPayment() - ((reader.getPayment() / 3) * 1));
                 double balance = library.getLibraryBalance();
                 balance += ((reader.getPayment() / 3) * 1);
+                borrow.remove(book);
+                library.getReturnedBooks().add(book);
                 System.out.println("Library's balance: " + balance);
                 System.out.println(reader.getName() + "'s balance: " + reader.getBalance());
 
@@ -127,13 +136,14 @@ public final class Librarian extends Person implements Customable {
                 reader.setBalance(0);
                 double balance = library.getLibraryBalance();
                 balance += (reader.getPayment());
+                borrow.remove(book);
+                library.getReturnedBooks().add(book);
                 System.out.println("Library's balance: " + balance);
                 System.out.println(reader.getName() + "'s balance: " + reader.getBalance());
             }
         }else {
             System.out.println("This book is not an element of this library.");
         }
-
     }
     public Reader findReader(Set<Reader> readerList, String readerName) {
         for (Reader reader : readerList) {

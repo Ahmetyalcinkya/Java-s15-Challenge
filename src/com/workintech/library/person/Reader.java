@@ -23,12 +23,8 @@ public class Reader extends Person {
     public void setLimit(int limit) {
         this.limit = limit;
     }
-
     public Set<Book> getBorrowed() {
         return borrowed;
-    }
-    public void setBorrowed(Set<Book> borrowed) {
-        this.borrowed = borrowed;
     }
 
     public double getPayment() {

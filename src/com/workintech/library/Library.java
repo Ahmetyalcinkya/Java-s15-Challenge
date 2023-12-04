@@ -3,10 +3,9 @@ package com.workintech.library;
 import com.workintech.library.books.Book;
 import com.workintech.library.person.Author;
 import com.workintech.library.person.Librarian;
+import com.workintech.library.person.Person;
 import com.workintech.library.person.Reader;
 
-
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,7 +15,6 @@ public class Library {
     private List<Book> books;
     private Set<Reader> readers;
     private Set<Author> authors;
-
     private Map<Book, Reader> borrowedBooks;
     private List<Book> returnedBooks;
     private Librarian librarian;
@@ -48,10 +46,6 @@ public class Library {
         return borrowedBooks;
     }
 
-    public void setBorrowedBooks(Map<Book, Reader> borrowedBooks) {
-        this.borrowedBooks = borrowedBooks;
-    }
-
     public List<Book> getReturnedBooks() {
         return returnedBooks;
     }
@@ -62,6 +56,22 @@ public class Library {
 
     public double getLibraryBalance() {
         return libraryBalance;
+    }
+
+    public boolean checkPassword(Person person, String password){
+        if(person instanceof Librarian){
+            if(((Librarian)person).getPassword().toLowerCase().equalsIgnoreCase(password)){
+                return true;
+            }
+            return false;
+        } else if (person instanceof Author) {
+            if(((Author)person).getPassword().toLowerCase().equalsIgnoreCase(password)){
+                return true;
+            }
+            return false;
+        } else {
+            return false;
+        }
     }
 
     @Override
